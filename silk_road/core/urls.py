@@ -27,10 +27,5 @@ urlpatterns = [
     path('seller/add_item/',views.addItemView.as_view(),name="add_item"),
     path('seller/delete_item/<pk>',views.deleteItemView,name = "delete_item"),
     path('seller/get_sales_report/',views.salesReportView,name = "get_sales_report"),
-    
-    # Auth views
-    path('customer_register/',views.customerRegisterView.as_view(),name="customer_register"),
-    path('seller_register/',views.sellerRegisterView.as_view(),name="seller_register"),
-    path('accounts/login/',LoginView.as_view(template_name='users/login.html'),name="login"),
-    path('accounts/logout/',LogoutView.as_view(next_page='dashboard'),name="logout"),
+   
 ]

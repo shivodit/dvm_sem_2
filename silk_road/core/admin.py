@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Seller, Customer, User, Product, Order
+from .models import Product, Order
 from import_export.admin import ImportExportMixin
 from import_export import resources, fields
 
@@ -20,5 +20,5 @@ class OrderAdmin(ImportExportMixin, admin.ModelAdmin):
 
 admin.site.register(Order, OrderAdmin)
 # Register your models here.
-models = [Seller,Customer,User,Product]
+models = [Product]
 admin.site.register(models)
