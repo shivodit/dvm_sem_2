@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Your Orders {% endblock title %}
+{% block content %}
+
+    <div class="card text-center">
+        <div class="card-body">
+        <h5 class="card-title">Welcome, {{customer.cuser.first_name }} {{ customer.cuser.last_name}}</h5>
+        <p class="card-text">You have {{n}} Orders till now.</p>
+        <hr/>
+        <p class="card-text">Current Address : {{customer.address}}</p>
+        <form action = "" method = "POST">
+            {% csrf_token %}
+            <div class="form-group">
+            <label for="address">Enter New Address : <label>
+            <input id="address" class="form-control" type="text" name="address" placeholder="{{customer.address}}">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Change Address">
+        </form>
+        </div>
+    </div>
+    
+
+{% endblock content%}

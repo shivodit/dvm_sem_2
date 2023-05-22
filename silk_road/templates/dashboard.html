@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %} Seller's Dashboard {% endblock title %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Items</h5>
+            <p class="card-text">Your have {{n}} Items on Sale out of which {{ out_stock }} are currently out of stock</p>
+            <a href="{% url 'item_list' %}" class="btn btn-primary">View all Items</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Orders</h5>
+            <p class="card-text">Till Now there have been {some number will be displayed here after implementing the orders system}</p>
+            <a href="{% url 'order_list' %}" class="btn btn-primary">View Orders</a>
+            <a href="{% url 'get_sales_report' %}" class="btn btn-primary">Get Sales Report</a>
+        </div>
+    </div>
+    
+    
+{% endblock content%}

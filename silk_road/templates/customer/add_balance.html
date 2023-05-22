@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Wallet Topup {% endblock title %}
+{% block content %}
+        <h1 class="display-4">Your Wallet Balance</h1>
+        <h5> Current Wallet Balance : &#8377;{{request.user.customer.wallet_balance}}
+        <form action = "{% url 'add_balance' %}" method = "POST">
+            {% csrf_token %}
+            <div class="form-group">
+            <label for="amount">Add Amount to Topup<label>
+            <input id="amount" class="form-control" type="text" placeholder="1000"  name="amount">
+            </div>
+            <input type="submit" class="btn btn-primary" value="ADD">
+        </form>
+        </div>
+    </div>
+    
+
+{% endblock content%}

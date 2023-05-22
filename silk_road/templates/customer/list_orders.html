@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %} Your Orders {% endblock title %}
+{% block content %}
+    
+    {% for order in orders %}
+    <div class="card">
+        <a class="card-body" href={% url 'order_detail' pk=order.id%}>
+            <h5 class="card-title">{{ order.product.name }}</h5>
+            <p class="card-text">Quantity: {{ order.quantity }}, Sold By :- {{order.product.seller.company_name}}
+                <br/>Cost: {{ order.cost }}
+            </p>
+            <hr/>
+            <p class="card-text">Placed On: {{ order.order_date }} at {{order.order_time}}</p>
+        </a>
+    </div>
+    
+    {% endfor %}
+    
+{% endblock content%}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Your Orders {% endblock title %}
+{% block content %}
+{% for order in orders %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ order.product.name }}</h5>
+            <p class="card-text">Quantity: {{ order.quantity }}, Order Placed By :- {{order.customer.cuser.username}} 
+                <br/> Address :- {{order.customer.address}} <br/>
+                Cost: {{ order.cost }}
+            </p>
+            <hr/>
+            <p class="card-text">placed on: {{ order.order_date }} at {{order.order_time}}</p>
+        </div>
+    </div>
+
+{% endfor %}
+{% endblock content%}
