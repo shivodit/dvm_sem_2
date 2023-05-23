@@ -2,7 +2,7 @@
 # create a ModelForm
 from django import forms
 
-from silk_road.core.models import Product
+from core.models import Product
 
 
 class ProductForm(forms.ModelForm):

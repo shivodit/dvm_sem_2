@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 # from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomerForm, SellerForm, CustomUserCreationForm, ProductForm
+from .forms import  ProductForm
 from .models import Product,Order,Seller,Review,Customer, CartItem
 # Create your views here.
 from allauth.account.views import SignupView
@@ -16,26 +16,6 @@ from mailjet_rest import Client
 import csv
 from django.http import HttpResponse
 # oauth 
-class ProfileSignupView(SignupView):
-
-  template_name = 'register.html'
-  success_url = '/'  # profile specific success url
-  form_class = SignupForm
-  profile_class = None  # profile class goes here
-
-  def form_valid(self, form):
-    response = super(ProfileSignupView, self).form_valid(form)
-    profile = self.profile_class(user=self.user)
-    profile.save()
-
-    return response
-  
-class CustomerGoogleSignupView(ProfileSignupView):
-   profile_class = Customer
-
-
-class SellerGoogleSignupView(ProfileSignupView):
-    profile_class = Seller
 
 @login_required
 def deleteItemView(request,pk):
@@ -230,6 +210,10 @@ def buyMultiItemView(request):
                 c = request.user.customer
                 if i.product.place_order(request,c,i.quantity) == 'success':
                     i.delete()
+        else: 
+            #TODO
+            print("Not Enough Balance")
+        
         return redirect('home')            
 
 @login_required

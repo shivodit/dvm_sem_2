@@ -7,9 +7,12 @@
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Log In</button>
-  <p class="font-weight-bold">OR</p>
-  {% load socialaccount %}
-  <a href="{% provider_login_url 'google' %}">Login With Google</a>
+  <button type="submit">Log In</button>  
+</form>
+<p class="font-weight-bold">OR</p>
+{% load socialaccount %}
+<form action="{% provider_login_url 'google' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Continue With Google</button>
 </form>
 {%endblock%}

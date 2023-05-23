@@ -10,4 +10,10 @@
 	<input type="submit" value="Register" />
 </form>
 
+<p class="font-weight-bold">OR</p>
+{% load socialaccount %}
+<form action="{% provider_login_url 'google' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Continue With Google</button>
+</form>
 {% endblock content%}
