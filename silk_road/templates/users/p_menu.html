@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Welcome to Silk Road</h1>
+<p> Please select Your Role: </p>
+<div class="container">
+    <div class="row">
+      <div class="col text-center">
+        <a class="btn btn-info" href={% url 'customer_profile_complete' %}>Join as Customer</a>
+        <a class="btn btn-info" href={% url 'seller_profile_complete'%}>Join as Seller</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock content%}
