@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
 {% block title %} Your Orders {% endblock title %}
 {% block content %}
-    <a class="btn btn-primary " href="{% url 'add_item' %}">
+<style>
+    .block {
+        display: block;
+        width: 96%;
+        margin:2%;  
+        border: none;
+        padding: 14px 28px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+      }
+</style>
+    <a class="btn btn-primary block" href="{% url 'add_item' %}">
         + ADD ITEM
     </a>
     {% for item in items%}
-    <div class="card">
+    <div class="card" style="margin:2%;">
         <div class="card-body">
             <h5 class="card-title">{{ item.name }}</h5>
             <p class="card-text">{{ item.description }} </p>
             <p class="card-text">In Stock : {{ item.quantity }} </p>
-            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="{% url 'edit_item' pk=item.pk %}" class="btn btn-primary">Edit</a>
             <a href="{% url 'delete_item' pk=item.id %}" class="btn btn-danger">Delete</a>
         </div>
     </div>

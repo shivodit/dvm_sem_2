@@ -3,12 +3,67 @@
 {% block title %} Add Item {% endblock title %}
 
 {% block content %}
-
 <form method="POST" novalidate enctype="multipart/form-data">
 	{% csrf_token %}
-	<h1>Add Item</h1>
-    {{ product_form }}
-	<input type="submit" value="Publish" />
+
+
+<section class="vh-100 gradient-custom">
+	<div class="container py-5 h-100">
+	  <div class="row d-flex justify-content-center align-items-center h-100">
+		<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+		  <div class="card bg-dark text-white" style="border-radius: 1rem;">
+			<div class="card-body p-5 text-center">
+  
+				{% load myfilters%}
+				<h2 class="fw-bold mb-2 text-uppercase">{% if product_form.instance.id %}Edit Item {% else %} Add Item{% endif %}</h2>
+  
+				<div class="form-outline form-white mb-4">
+					 <label class="form-label" for="typeEmailX">{{ product_form.name.label_tag }}</label>
+					 {{ product_form.name.errors }}
+					{{ product_form.name | addclass:"form-control form-control-lg" }}
+				 
+				</div>
+
+				<div class="form-outline form-white mb-4">
+					<label class="form-label" for="typeEmailX">{{ product_form.description.label_tag }}</label>
+					{{ product_form.description.errors }}
+					{{ product_form.description | addclass:"form-control form-control-lg" }}
+				  
+				</div>
+
+				<div class="form-outline form-white mb-4">
+					<label class="form-label" for="typeEmailX">{{ product_form.price.label_tag }}</label>
+					{{ product_form.price.errors }}
+					{{ product_form.price | addclass:"form-control form-control-lg" }}
+				  
+				</div>
+
+				<div class="form-outline form-white mb-4">
+					<label class="form-label" for="typeEmailX">{{ product_form.quantity.label_tag }}</label>
+					{{ product_form.quantity.errors }}
+					{{ product_form.quantity | addclass:"form-control form-control-lg" }}
+				  
+				</div>
+
+				<div class="form-group">
+					{{ product_form.image.errors }}
+					<label for="exampleFormControlFile1">{{ product_form.image.label_tag }}</label>
+					{% comment %} <input type="file" class="form-control-file" id="exampleFormControlFile1"> {% endcomment %}
+					{{ product_form.image | addclass:"form-control form-control-lg" }}
+				  </div>
+
+  
+				<input type="submit" class="btn btn-outline-light btn-lg px-5" value="Publish" />
+  
+			</div>
+  
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+
 </form>
 
 {% endblock content%}

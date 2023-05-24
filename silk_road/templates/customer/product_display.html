@@ -1,6 +1,57 @@
 {% extends 'base.html' %}
 {% block title %} {{ product.name }} {% endblock title %}
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+<main class="container">
+ 
+    <!-- Left Column / Headphones Image -->
+    <div class="col-md-6">
+        <img src="{{ product.image.url }}"></img>
+    </div>
+   
+   
+    <!-- Right Column -->
+    <div class="right-column">
+   
+      <!-- Product Description -->
+      <div class="product-description">
+        <h1>{{product.name}}</h1>
+        <p>{{product.description}}</p>
+      </div>
+   
+      <!-- Product Configuration -->
+      <div class="product-configuration">
+
+   
+        <!-- Cable Configuration -->
+        <div class="cable-config">
+            <form action = "{% url 'buy_item' pk=product.id%}" method = "POST">
+                {% csrf_token %}
+                <div class="form-group">
+                <span>Quantity ({{product.quantity}} left)</span>
+                <input id="quantity" class="form-control" type="text" value="1"  name="quantity">
+                </div>
+                
+            
+   
+          <a href="{% url 'vendor_profile' pk=product.seller.id %}">Sold By: {{product.seller.company_name}}</a>
+        </div>
+      </div>
+   
+      <!-- Product Pricing -->
+      <div class="product-price">
+        <span>&#8377;{{product.price}}</span>
+        <input type="submit" class="cart-btn btn-primary" value="Buy">
+        <input type="submit" class="btn cart-btn btn-success" formaction="{% url 'add_to_cart' pk=product.id is_wished=0 %}" value="Add To Cart">
+        <input type="submit" class="btn cart-btn btn-info" formaction="{% url 'add_to_cart' pk=product.id is_wished=1 %}" value="Add to Wishlist">
+    
+        </form>
+      </div>
+    </div>
+  </main>    
+
+{% comment %} 
     <div class="modal-body row">
         <div class="col-md-6">
             <img src="{{ product.image.url }}"></img>
@@ -23,22 +74,26 @@
 
         </form>
         </div>
-    </div>
+    </div> {% endcomment %}
+
+    {% comment %} review {% endcomment %}
     {% if has_purchased %}
+    <div style="margin:2%;">
     <form action = "{% url 'add_review' pk=product.id%}" method = "POST">
         {% csrf_token %} 
         <label for="add-review">Tell us about your experience with this Product: </label>
         <style>
             textarea:invalid { border: 1px solid red; outline: none; }
         </style>
-        <textarea class="form-control" id="add-review" name="review" rows="3" minlength="5" placeholder="Enter your review"></textarea>
+        <textarea class="form-control review" id="add-review" name="review" rows="3" minlength="5" placeholder="Enter your review"></textarea>
         <input type="submit" class="btn btn-primary" value="Add Review">
     </form>
     {% endif %}
+</div>
     {% for review in reviews %}
-    {% if forloop.first %} <hr><h3>Reviews </h3> <hr/> {% endif %}
+    {% if forloop.first %} <hr><h3 style="margin:2%">Reviews</h3> <hr/> {% endif %}
     <hr/>
-    <div>
+    <div style = "margin:4%">
         <div class="d-flex justify-content-between align-items-center">
           <p class="font-weight-bold  mb-1">
            {{review.customer.cuser.first_name}} {{review.customer.cuser.last_name}} <span class="small">Posted on :{{review.date}} {{review.time}}</span>

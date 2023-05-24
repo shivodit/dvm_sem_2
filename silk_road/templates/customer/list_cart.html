@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% block title %} Cart {% endblock title %}
 {% block content %}
-
+<style>
+    .btn-success{
+        margin-top:2%;
+        }
+        
+</style>
     {% if is_wished == 1 %}
-        <h1>{{ request.user.first_name }}'s Wishlist</h1>
+        <h1 class="text-center" style="margin-top:4%">{{ request.user.first_name }}'s Wishlist</h1>
     {% else %}
-        <h1>Your Cart</h1>
+        <h1 class="text-center" style="margin-top:4%">Your Cart</h1>
             
     {% endif %}    
 
@@ -14,8 +19,16 @@
         <div class="card-body">
             <a href="{% url 'product_display' pk=item.product.id %}" class="fs-1 card-title">{{ item.product.name }}</a>
             <p class="card-text">Quantity: {{ item.quantity }}, Sold By :- {{item.product.seller.company_name}}
-                <br/>Cost: {% widthratio item.quantity 1 item.product.price  %}
+                <br/>Cost: {% widthratio item.quantity 1 item.product.price  %}<br/>
                 <a href="{% url 'remove_cart_item' pk=item.id %}" class="btn btn-danger">Remove</a>
+                <a href="{% url 'switch_carts' pk=item.id %}" class="btn btn-info">Move to
+                    {% if is_wished == 1 %}
+                        Cart
+                    {% else %}
+                        Wishlist
+                    {% endif %}
+                </a>
+
             </p>
             <hr/>
             
@@ -23,15 +36,16 @@
     </div>
     
     {% endfor %}
+    <div class="text-center" style="margin:2%">
     {% if is_wished == 0  %}
         {% if cart_items %}
-            <a class="btn btn-success" href="{% url 'buy_multiple_item' %}">BUY</a>
+            <a class="btn btn-success btn-lg" href="{% url 'buy_multiple_item' %}">BUY</a>
         {%else%}
-            You currently have no Items in your Cart <a class="btn btn-success" href="{% url 'home' %}">Continue Shopping</a>
+            You currently have no Items in your Cart <br><a class="btn btn-success btn-lg" href="{% url 'home' %}">Continue Shopping</a>
         {% endif %}
     {% elif is_wished == 1 and not cart_items %}
 
-        You currently don't have anything wishlisted <a class="btn btn-success" href="{% url 'home' %}">Continue Shopping</a>
+        You currently don't have anything wishlisted <br><a class="btn btn-success btn-lg" href="{% url 'home' %}">Continue Shopping</a>
     {% endif %}
-    
+    </div>
 {% endblock content%}

@@ -1,18 +1,84 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block title %} Log In {% endblock %}
 
 {% block content %}
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>  
-</form>
-<p class="font-weight-bold">OR</p>
-{% load socialaccount %}
-<form action="{% provider_login_url 'google' %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Continue With Google</button>
-</form>
+<style>
+  input{
+    display: block;
+    width: 100%;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    height: calc(1.5em + 1rem + 2px);
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+  }
+  
+</style>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            {% load socialaccount %}
+            <form action="{% provider_login_url 'google' %}" method="post">
+              {% csrf_token %}
+              <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+              <br>
+              <button type="submit" class="btn btn-primary btn-floating mx-1">
+                <i class="fab fa-google"> | google</i>
+              </button>
+            </form>
+          </div>
+          
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0">Or</p>
+          </div>
+         
+          {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
+          {% endif %}
+          {% load myfilters %}
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <!-- Email input -->
+              <div class="form-outline mb-4">
+                {{ form.username }}
+               
+                <label class="form-label" for="form3Example3">Username</label>
+              </div>
+            
+            <!-- Password input -->
+          <div class="form-outline mb-3">
+            {{ form.password }}
+            <label class="form-label" for="form3Example4">Password</label>
+          </div>
+
+
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="sumbit" value="login" class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+         
+            <input type="hidden" name="next" value="{{ next }}" />
+          </form>
+          
+
+          
+
+      </div>
+    </div>
+  </div>
+</section>
 {%endblock%}

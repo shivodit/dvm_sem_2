@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView,LogoutView
 
 urlpatterns = [
     # customer view
-    path('',lambda req : render(req,'index.html'),name="index"),
+    path('',views.indexView,name="index"),
     path('home/',views.homeView.as_view(),name="home"),
     path('dashboard/',views.dashboardView,name="dashboard"),
     path('product_display/<pk>',views.productView,name="product_display"),
@@ -19,13 +19,16 @@ urlpatterns = [
     path('show_cart_items/<is_wished>',views.showCartItemView,name='show_cart_items'),    
     path('remove_cart_item/<pk>',views.removeCartItem,name='remove_cart_item'),   
     path('buy_multiple_item/',views.buyMultiItemView,name='buy_multiple_item'),    
-    path('order_detail/<pk>',views.orderDetailView,name='order_detail'),   
+    path('order_detail/<pk>',views.orderDetailView,name='order_detail'),  
+    path('switch_cart/<pk>',views.switchCartView,name='switch_carts'),   
+
 
     # seller view
     path('seller/order_list/',views.listOrdersView,name="order_list"),
     path('seller/item_list/',views.listItemView,name="item_list"),
     path('seller/add_item/',views.addItemView.as_view(),name="add_item"),
     path('seller/delete_item/<pk>',views.deleteItemView,name = "delete_item"),
+    path('seller/edit_item/<pk>',views.editItemView.as_view(),name = "edit_item"),
     path('seller/get_sales_report/',views.salesReportView,name = "get_sales_report"),
    
 ]

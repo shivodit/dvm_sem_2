@@ -59,11 +59,9 @@ class Product(models.Model):
             print(result.json())
             #send mail 
 
-            #TODO
-            return 'success'
+            return ('success',order)
         else : 
-            #TODO
-            print('not valid request')
+            return ('success',None)
 
     def __str__(self):
         return self.name
@@ -92,3 +90,7 @@ class Review(models.Model):
     time = models.TimeField(auto_now_add=True)
     date = models.DateField(auto_now_add=True)
     customer_review = models.TextField(max_length=1000)
+
+def saleOfProduct(product):
+    orders = product.order_set.all()
+    return sum([order.quantity for order in orders])

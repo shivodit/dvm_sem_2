@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+.block {
+  display: block;
+  width: 96%;
+  margin:2%;  
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+</style>
 
-<h1>Welcome to Silk Road</h1>
-<p> Please select Your Role: </p>
 <div class="container">
     <div class="row">
       <div class="col text-center">
-        <a class="btn btn-info" href={% url 'customer_profile_complete' %}>Join as Customer</a>
-        <a class="btn btn-info" href={% url 'seller_profile_complete'%}>Join as Seller</a>
+        <h1>Welcome to Silk Road</h1>
+        <p> Please select Your Role </p>     
+        <a class="btn btn-info block" href={% url 'customer_profile_complete' %}>Join as Customer</a>
+        <hr/>
+        <a class="btn btn-info block" href={% url 'seller_profile_complete'%}>Join as Seller</a>
       </div>
     </div>
   </div>

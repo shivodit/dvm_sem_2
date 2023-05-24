@@ -1,18 +1,37 @@
 {% extends 'base.html' %}
 {% block title %} Wallet Topup {% endblock title %}
 {% block content %}
-        <h1 class="display-4">Your Wallet Balance</h1>
-        <h5> Current Wallet Balance : &#8377;{{request.user.customer.wallet_balance}}
-        <form action = "{% url 'add_balance' %}" method = "POST">
-            {% csrf_token %}
-            <div class="form-group">
-            <label for="amount">Add Amount to Topup<label>
-            <input id="amount" class="form-control" type="text" placeholder="1000"  name="amount">
-            </div>
-            <input type="submit" class="btn btn-primary" value="ADD">
-        </form>
-        </div>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+<div class="card mt-50 mb-50" >
+    <div class="card-title mx-auto">
+        Wallet
     </div>
-    
+    <div class="nav">
+        <ul class="mx-auto" >
+            <li class="active"><a href="#">Payment</a></li>
+        </ul>
+    </div>
+    <form action = "{% url 'add_balance' %}" method = "POST">
+        {% csrf_token %}
+        <span id="card-header"> Current Wallet Balance</span>
+                <div class="row row-1">
+                    <div class="col-7">
+                        &#8377;{{request.user.customer.wallet_balance}}
+                    </div>
+                </div>         
+        <span id="card-header">Add Wallet Balance: </span>
+        <div class="row-1">
+            <div class="row row-2">
+                <span id="card-inner">Amount</span>
+            </div>
+            <div class="row row-2">
+                <input type="text" name="amount" placeholder=" &#8377;1000">
+            </div>
+        </div>
+        <input type="submit" value="Add" class="btn d-flex mx-auto">
+    </form>
+</div>
 
 {% endblock content%}

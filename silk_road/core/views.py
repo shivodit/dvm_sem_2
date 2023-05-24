@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 # from django.contrib.auth.forms import UserCreationForm
 from .forms import  ProductForm
-from .models import Product,Order,Seller,Review,Customer, CartItem
+from .models import Product,Order,Seller,Review,Customer, CartItem, saleOfProduct
 # Create your views here.
 from allauth.account.views import SignupView
 from allauth.account.forms import SignupForm
@@ -16,6 +16,56 @@ from mailjet_rest import Client
 import csv
 from django.http import HttpResponse
 # oauth 
+
+class editItemView(LoginRequiredMixin,View):
+    
+    def get(self, request,pk):
+        product = Product.objects.get(pk=pk)
+        if request.user.seller != product.seller:
+            raise PermissionDenied()
+        
+        product_form = ProductForm(instance=product)
+
+        context = {
+            'product_form' : product_form,
+        }
+        
+        return render(request, 'sellers/add_item.html', context)
+    
+    def post(self,request,pk):
+        product = Product.objects.get(pk=pk)
+        if request.user.seller != product.seller:
+            raise PermissionDenied()
+        
+        product_form = ProductForm(
+            request.POST,
+            request.FILES,
+            instance=product    
+        )
+
+        if product_form.is_valid():
+            product = product_form.save(commit=False)
+            product.seller = request.user.seller
+            product.save()
+            return redirect('item_list')
+        
+        else :
+            context = {
+                'product_form' : product_form,
+            }
+        
+            return render(request, 'sellers/add_item.html', context)
+   
+def indexView(request):
+    if request.user.is_authenticated:
+        if request.user.is_seller:
+            return redirect('dashboard')
+        elif request.user.customer:
+            return redirect('home')
+        else:
+            return redirect('profile_menu')
+    else:
+        return redirect('login')
 
 @login_required
 def deleteItemView(request,pk):
@@ -147,8 +197,10 @@ class homeView(LoginRequiredMixin,generic.ListView):
         if not self.request.user.is_customer:
             return redirect('dashboard')
     
-        queryset = super(homeView, self).get_queryset().order_by('name')
-        return queryset
+        queryset = list(super(homeView, self).get_queryset())
+        queryset.sort(key=saleOfProduct)
+        split_lists = [queryset[x:x+3] for x in range(0, len(queryset), 3)]
+        return split_lists
        
 @login_required
 def productView(request,pk):
@@ -175,6 +227,9 @@ def removeCartItem(request,pk):
     else:
         raise PermissionDenied
     
+def handler404(request, exception, template_name="404.html"):
+    
+    return render(request,template_name=template_name)
 
 @login_required
 def addToCartView(request,pk,is_wished):
@@ -182,22 +237,35 @@ def addToCartView(request,pk,is_wished):
         q = request.POST['quantity']
         cart_item = CartItem(customer=request.user.customer,product=Product.objects.get(pk=pk),quantity=q,is_wished=is_wished)
         cart_item.save()
-        # TODO
-        return redirect('home')
-        
+ 
+        return redirect(reverse('show_cart_items', kwargs={"is_wished": int(is_wished)}))   
     else :
         raise PermissionDenied
-    
+
+@login_required
+def switchCartView(request,pk):
+    item = CartItem.objects.get(pk=pk)
+    if item.customer == request.user.customer:
+        item.is_wished = not item.is_wished 
+        item.save()
+        return redirect(reverse('show_cart_items', kwargs={"is_wished": int(item.is_wished)}))
+    else: 
+        raise PermissionDenied
+
 @login_required
 def buyProductView(request,pk):
     if request.method=='POST' and request.user.is_customer:
         c = request.user.customer
         quantity = int(request.POST['quantity'])
         product=Product.objects.get(pk=pk)
-        if 'success' == product.place_order(request,c,quantity):
-            return redirect('home')
+        re = product.place_order(request,c,quantity)
+        if 'success' == re[0]:
+            return render(request,'customer/order_successful.html',{'orders':[re[1]],'total':re[1].cost})
         else :
-            print("something went Wrong")
+            if product.quantity>quantity:
+                return render(request,'customer/order_failed.html',{'error':"Not enough balance to place order"})
+            else : 
+                return render(request,'customer/order_failed.html',{'error':"Item is out of stock "})
 
 @login_required
 def buyMultiItemView(request):
@@ -206,15 +274,19 @@ def buyMultiItemView(request):
         cost = sum([i.product.price * i.quantity for i in cart_items])
         in_stock = all([i.product.quantity >= i.quantity for i in cart_items ])
         if request.user.customer.wallet_balance >= cost and in_stock:
+            orders = []
             for i in cart_items:
                 c = request.user.customer
-                if i.product.place_order(request,c,i.quantity) == 'success':
+                orders.append(i.product.place_order(request,c,i.quantity))
+                if orders[-1][0] == 'success':
                     i.delete()
+            return render(request,'customer/order_successful.html',{'orders':[x[1] for x in orders],'total':cost})
         else: 
-            #TODO
-            print("Not Enough Balance")
-        
-        return redirect('home')            
+            if in_stock:
+                return render(request,'customer/order_failed.html',{'error':"Not enough balance to place order"})
+            else : 
+                return render(request,'customer/order_failed.html',{'error':"Item is out of stock "})
+    return redirect('home')            
 
 @login_required
 def orderDetailView(request,pk):
@@ -225,7 +297,6 @@ def orderDetailView(request,pk):
 def customerOrdersView(request):
     if request.user.is_customer:
         orders = Order.objects.filter(customer=request.user.customer)
-        print(orders)
         return render(request,'customer/list_orders.html',{'orders':orders})
     else: 
         raise PermissionDenied
@@ -246,12 +317,15 @@ class addBalanceView(LoginRequiredMixin,View):
         return render(request, 'customer/add_balance.html',{})
     
     def post(self,request):
-        amount = int(request.POST['amount'])
-        if amount > 0 and request.user.is_customer:
-            c = request.user.customer
-            c.wallet_balance += amount
-            c.save() 
-            return redirect('home')
+
+        amount = int(request.POST['amount'] if request.POST['amount'] else 0)
+        if request.user.is_customer:
+            if amount > 0:
+                c = request.user.customer
+                c.wallet_balance += amount
+                c.save() 
+                return redirect('home')
+            else: 
+                return render(request, 'customer/add_balance.html',{'error':'Please enter a valid value:'})
         else: 
-            #TODO implement error message 
-            print('please enter a valid value')
+            raise PermissionDenied

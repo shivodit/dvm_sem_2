@@ -1,13 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load myfilters%}
+<style>
+	input,  textarea{
 
-<form method="POST" novalidate>
+		width: 100%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		box-sizing: border-box;
+	}
+</style>
+<div style="margin:5%" class="text-center">
+<form>
 	{% csrf_token %}
 	<h2>Hello, {{ request.user.first_name }} </h2>
     <p>Please complete your profile.</p>		
     {{ profile_form.as_p }}
-	<input type="submit" value="Register" />
+	<input type="submit" class="btn btn-success" style="padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;" value="Register" />
 </form>
-
+</div>
 {% endblock content%}

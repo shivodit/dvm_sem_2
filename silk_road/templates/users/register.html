@@ -2,18 +2,211 @@
 
 {% block content %}
 
-<form method="POST" novalidate>
-	{% csrf_token %}
-	<h2>Sign Up</h2>
-	{{ user_form.as_p }}		
-    {{ profile_form.as_p }}
-	<input type="submit" value="Register" />
-</form>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<style>
+	body{
+		background: rgb(117,181,207);
+		background: linear-gradient(0deg, rgba(117,181,207,1) 3%, rgba(45,253,170,1) 95%);
+		background-attachment:fixed;
+height:100%;
+	}
+</style>
+<section class=" h-100 h-custom">
+	<div class="container py-5 h-100">
+	  <div class="row d-flex justify-content-center align-items-center h-100">
+		<div class="col-12">
+		  <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+			<div class="card-body p-0">
+			  <div class="row g-0">
+				<div class="col-lg-6">
+				  <div class="p-5">
+					{% if profile_form.wallet_balance %}
+					<h3 class="fw-normal mb-5" style="color: #4835d4;">Customer Sign Up</h3>
+					{% else %}
+					<h3 class="fw-normal mb-5" style="color: #4835d4;">Seller Sign Up</h3>
+					{% endif %}
+					
+					{% load myfilters %}
+					<form method="POST" novalidate>
+						{% csrf_token %}
+					<div class="row">
+					  <div class="col-md-6 mb-4 pb-2">
+  
+						<div class="form-outline">
+							{{ user_form.first_name.errors }}
+            				{{ user_form.first_name | addclass:"form-control form-control-lg" }}
+						  <label class="form-label" >{{ user_form.first_name.label_tag }}</label>
+						</div>
+  
+					  </div>
+					  <div class="col-md-6 mb-4 pb-2">
+  
+						<div class="form-outline">
+							{{ user_form.last_name.errors }}
+            				 {{ user_form.last_name | addclass:"form-control form-control-lg"}}
+							<label class="form-label" >{{ user_form.last_name.label_tag  }}</label>
+						</div>
+  
+					  </div>
+					</div>
+					<div class="mb-4">
+						<div class="form-outline form-white">
+							{{ user_form.username.errors }}
+							{{ user_form.username | addclass:"form-control form-control-lg"}}
+						  <label class="form-label">{{ user_form.username.label_tag }}</label>
+						</div>
+					</div>
+					<div class="mb-4">
+						<div class="form-outline form-white">
+							{{ user_form.email.errors }}
+							{{ user_form.email | addclass:"form-control form-control-lg"}}
+						  <label class="form-label">{{ user_form.email.label_tag }}</label>
+						</div>
+					</div>
 
+					<div class="mb-4">
+						<div class="form-outline form-white">
+							{{ user_form.password1.errors }}
+							{{ user_form.password1 | addclass:"form-control form-control-lg"}}
+						  <label class="form-label" >{{ user_form.password1.label_tag }}</label>
+						</div>
+					</div>
+					<div class="mb-4">
+						<div class="form-outline form-white">
+							{{ user_form.password2.errors }}
+							{{ user_form.password2 | addclass:"form-control form-control-lg"}}
+						  <label class="form-label">{{ user_form.password2.label_tag }}</label>
+						</div>
+					</div>
+				
+					
+  
+					
+				  </div>
+				</div>
+
+				<div class="col-lg-6 bg-indigo text-white">
+				  <div class="p-5">
+					<h3 class="fw-normal mb-5">More Details</h3>
+					
+					{% if profile_form.wallet_balance %}
+						<div class="mb-4 pb-2">
+							<div class="form-outline">
+							  {{ profile_form.address.errors }}
+							  {{ profile_form.address | addclass:"form-control form-control-lg" }}
+							  <label class="form-label" >{{ profile_form.address.label_tag  }}</label>
+							  
+							</div>
+						</div>
+  
+					<div class="mb-4 pb-2">
+						<div class="form-outline">
+							{{ profile_form.country.errors }}
+							{{ profile_form.country | addclass:"form-control form-control-lg" }}
+							<label class="form-label" >{{ profile_form.country.label_tag  }}</label>
+							
+						  </div>
+					</div>
+  
+					<div class="mb-4 pb-2">
+						<div class="form-outline">
+							{{ profile_form.wallet_balance.errors }}
+							{{ profile_form.wallet_balance | addclass:"form-control form-control-lg" }}
+							<label class="form-label" >{{ profile_form.wallet_balance.label_tag  }}</label>
+							
+						  </div>
+					</div>	
+					<div class="form-check d-flex justify-content-start mb-4 pb-3">
+						<input class="form-check-input me-3" type="checkbox" value="" id="form2Example3c" />
+						<label class="form-check-label text-white" for="form2Example3">
+						  I do accept the <a href="#!" class="text-white"><u>Terms and Conditions</u></a> of your
+						  site.
+						</label>
+					  </div>
+	
+					  <input type="submit" class="btn btn-light btn-lg"
+						data-mdb-ripple-color="dark" value="Register">
+					  </form>	
+					  {% load socialaccount %}
+				  <form action="{% provider_login_url 'google' %}" method="post">
+					{% csrf_token %}
+					<br>
+					<p class="lead fw-normal mb-0 me-3">OR Sign Up with</p>
+					<br>
+					<button type="submit" class="btn btn-primary btn-floating mx-1">
+					  <i class="fab fa-google"> | google</i>
+					</button>
+				  </form>
+					</div>
+				</div>
+
+				
+				{% else %}
+				<div class="mb-4 pb-2">
+					<div class="form-outline">
+					  {{ profile_form.address.errors }}
+					  {{ profile_form.address | addclass:"form-control form-control-lg" }}
+					  <label class="form-label" >{{ profile_form.address.label_tag  }}</label>
+					  
+					</div>
+				</div>
+
+				<div class="mb-4 pb-2">
+					<div class="form-outline">
+						{{ profile_form.company_name.errors }}
+						{{ profile_form.company_name | addclass:"form-control form-control-lg" }}
+						<label class="form-label" >{{ profile_form.company_name.label_tag  }}</label>
+						
+					</div>
+				</div>
+
+				<div class="mb-4 pb-2">
+					<div class="form-outline">
+						{{ profile_form.description.errors }}
+						{{ profile_form.description | addclass:"form-control form-control-lg" }}
+						<label class="form-label" >{{ profile_form.description.label_tag  }}</label>
+						
+					</div>
+				</div>
+				<div class="form-check d-flex justify-content-start mb-4 pb-3">
+					<input class="form-check-input me-3" type="checkbox" value="" id="form2Example3c" />
+					<label class="form-check-label text-white" for="form2Example3">
+					  I do accept the <a href="#!" class="text-white"><u>Terms and Conditions</u></a> of your
+					  site.
+					</label>
+				  </div>
+
+				  <input type="submit" class="btn btn-light btn-lg"
+					data-mdb-ripple-color="dark" value="Register">
+				  </form>	
+				  {% load socialaccount %}
+				  <form action="{% provider_login_url 'google' %}" method="post">
+					{% csrf_token %}
+					<br>
+					<p class="lead fw-normal mb-0 me-3">OR Sign in with</p>
+					<br>
+					<button type="submit" class="btn btn-primary btn-floating mx-1">
+					  <i class="fab fa-google"> | google</i>
+					</button>
+				  </form>
+				</div>
+				{% endif %}
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+
+{% comment %} 
 <p class="font-weight-bold">OR</p>
 {% load socialaccount %}
 <form action="{% provider_login_url 'google' %}" method="post">
   {% csrf_token %}
   <button type="submit">Continue With Google</button>
-</form>
+</form> {% endcomment %}
 {% endblock content%}

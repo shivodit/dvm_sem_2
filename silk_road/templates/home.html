@@ -2,17 +2,58 @@
 {% block title %} Silk Road | Home {% endblock title %}
 
 {% block content %}
+<style>
+	body{
+		background: rgb(211,229,238);
+        background: linear-gradient(0deg, rgba(211,229,238,1) 6%, rgba(211,245,234,1) 100%);
+		background-attachment:fixed;
+        height:100%;
+	}
+</style>
+<section >
+    <div class="text-center container py-5">
+      <h4 class="mt-4 mb-5"><strong>Bestsellers</strong></h4>
+      
+      {% for s in items %}
+      <div class="row"> 
+      {% for item in s %}
+      <div class="col-lg-4 col-md-12 mb-4">
+        <a href = "{% url 'product_display' pk=item.id %}" class="card">
+          <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+            data-mdb-ripple-color="light">
+            <img  src="{{ item.image.url }}"
+              class="w-100" />
+              <div class="hover-overlay">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </div>
+          </div>
+          <div class="card-body">
+            
+              <h5 class="card-title mb-3">{{ item.name }}</h5>
+            
+            <h6 class="mb-3">₹ {{ item.price }}</h6>
+          </div>
+        </a>
+      </div>
 
+        {% endfor %}
+    </div>
+      {% endfor %}
+    </div>
+  </section>    
+
+{% comment %}     
+    
     {% for item in items%}
-
+   
     <a class="card" href="{% url 'product_display' pk=item.id %}"  style="width: 18rem;">
         <img class="card-img-top" src="{{ item.image.url }}" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">{{ item.name }}</h5>
-            <p class="card-text">{{ item.description }}</p>
+            <p class="card-text"> ₹ {{ item.price }}</p>
         </div>
     </a>
     
-    {% endfor %}
+    {% endfor %} {% endcomment %}
 
 {% endblock content%}
