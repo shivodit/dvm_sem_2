@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Order Failed {% endblock title %}
+{% block content %}
+<div style="text-center">
+    <div style="border: 1px solid darkred; background: salmon">
+        <i>&#9888;</i> {{error}}
+      </div>
+      <a type="button" href={% url 'home' %} class="btn btn-primary">Go Back</a>
+
+</div>
+
+{% endblock content%}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} <meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title>404 Error Page</title>
+<meta content="Error Page" name="description">
+<meta content="404 Error" name="keywords">
+
+<!-- Favicons -->
+<link href="assets/img/errors/error-favicon.png" rel="icon">
+<link href="assets/img/errors/error-favicon.png" rel="apple-touch-icon">
+
+<!-- Template Main CSS File -->
+<link href="assets/css/style.css" rel="stylesheet">{% endblock title %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center vh-100 section-notfound">
+    <div class="text-center">
+        
+        <h1 class="display-1 fw-bold">404</h1>
+        <p class="fs-3"> <span class="text-danger">Oops!</span> Page not found</p>
+        <p class="lead">
+            The page you are looking for doesn’t exist.
+        </p>
+        <a href="{%url 'home'%}" class="btn btn-success">Go To Home Page</a>
+    </div>
+</div>
+    
+{% endblock content%}

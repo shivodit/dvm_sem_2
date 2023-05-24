@@ -1,0 +1,25 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 50px;
+    /* bottom = footer height */
+    /* padding: 25px; */
+    
+        
+}
+body i {
+    font-family:'FontAwesome'!important;
+    }
+
+footer {
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
