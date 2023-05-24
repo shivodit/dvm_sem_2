@@ -1,3 +1,5 @@
 {
-    "C_Cpp.default.compilerPath": "D:\\MinGW\\bin\\gcc.exe"
+    "C_Cpp.default.compilerPath": "D:\\MinGW\\bin\\gcc.exe",
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/1e647f1f-4685-4b12-91e6-f8e114c8e0ea/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/p-silk-road",
+    "appService.deploySubpath": "."
 }
