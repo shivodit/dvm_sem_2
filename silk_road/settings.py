@@ -25,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = djsec
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-CSRF_COOKIE_SECURE = True
-ALLOWED_HOSTS = ['*']
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True 
+DEBUG = True
+# CSRF_COOKIE_SECURE = True
+ALLOWED_HOSTS = ['127.0.0.1']
+# SESSION_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True 
 # Application definition
 
 INSTALLED_APPS = [
@@ -161,7 +161,7 @@ STATICFILES_DIRS = (
 )
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+STATIC_ROOT=os.path.join(BASE_DIR, "staticfiles")
 LOGIN_REDIRECT_URL = "/accounts/profile"
 
 # Default primary key field type

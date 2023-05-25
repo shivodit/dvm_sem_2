@@ -12,7 +12,7 @@
 	}
 </style>
 <div style="margin:5%" class="text-center">
-<form>
+<form method="post">
 	{% csrf_token %}
 	<h2>Hello, {{ request.user.first_name }} </h2>
     <p>Please complete your profile.</p>		
